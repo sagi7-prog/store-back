@@ -60,7 +60,7 @@ namespace Store.Front
             services.AddScoped<IGenericRepository<ClientesArticulos>, GenericRepository<ClientesArticulos>>();
 
 
-            // Configuración JWT
+            // Configuraciï¿½n JWT
             var key = Encoding.ASCII.GetBytes("MODULE_AUTHENTICATION_STORE_2552");
 
             services.AddAuthentication(x =>
@@ -106,7 +106,7 @@ namespace Store.Front
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Store API V1");
-                c.RoutePrefix = string.Empty; // Esto hace que Swagger sea la página principal
+                c.RoutePrefix = "swagger"; // Cambiar a /swagger
             });
 
             app.UseHttpsRedirection();
@@ -116,7 +116,7 @@ namespace Store.Front
             // Activar CORS
             app.UseCors("AllowLocal");
 
-            // Habilitar autenticación
+            // Habilitar autenticaciï¿½n
             app.UseAuthentication();
 
             app.UseAuthorization();
