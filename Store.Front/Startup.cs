@@ -42,7 +42,33 @@ namespace Store.Front
                 c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
                 {
                     Title = "Store API",
-                    Version = "v1"
+                    Version = "v1",
+                    Description = "API para sistema de tienda con autenticación JWT"
+                });
+                
+                // Configurar autenticación JWT en Swagger
+                c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    Name = "Authorization",
+                    In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+                    Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+                
+                c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+                {
+                    {
+                        new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+                        {
+                            Reference = new Microsoft.OpenApi.Models.OpenApiReference
+                            {
+                                Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        new string[] {}
+                    }
                 });
             });
 
@@ -85,9 +111,10 @@ namespace Store.Front
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowLocal", builder => builder
-                    .WithOrigins("http://localhost:4200")
+                    .WithOrigins("http://localhost:4200", "http://localhost:5000", "https://localhost:5001")
                     .AllowAnyHeader()
-                    .AllowAnyMethod());
+                    .AllowAnyMethod()
+                    .AllowCredentials());
             });
 
 
@@ -106,7 +133,13 @@ namespace Store.Front
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Store API V1");
-                c.RoutePrefix = "swagger"; // Cambiar a /swagger
+                c.RoutePrefix = "swagger";
+                c.DocumentTitle = "Store API Documentation";
+                c.DefaultModelsExpandDepth(0);
+                c.DisplayRequestDuration();
+                c.EnableDeepLinking();
+                c.EnableFilter();
+                c.ShowExtensions();
             });
 
             app.UseHttpsRedirection();

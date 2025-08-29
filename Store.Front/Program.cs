@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Globalization;
 
 namespace Store.Front
 {
@@ -13,6 +14,10 @@ namespace Store.Front
     {
         public static void Main(string[] args)
         {
+            // Configurar cultura para Ubuntu
+            CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("en-US");
+            CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("en-US");
+            
             CreateHostBuilder(args).Build().Run();
         }
 
